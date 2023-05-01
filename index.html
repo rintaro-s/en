@@ -1,0 +1,187 @@
+<h1>石ころビューアーVr,1.0.2(english)</h1>
+<head>
+	<title>Dark/Light Mode Toggle</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="script.js"></script>
+</head>
+<body id=dark>
+	<button id="mode-toggle"> dark mode</button>
+</body>
+<body>
+	<button onclick="location.href='https://rintaro-s.github.io/unity-test/'">mini game'"</button>
+</body>
+  <head>
+    <style>
+      #modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      #modal-content {
+        display: block;
+        position: relative;
+        background-color: #fff;
+        margin: 10% auto;
+        padding: 20px;
+        width: 90%;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      }  
+      #close {
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      } 
+    </style>
+  </head>
+  <body>
+    <button id="open-modal">サイトの説明</button>
+    <div id="modal">
+      <div id="modal-content">
+        <span id="close">&times;</span>
+        <p>This site is a site where you can see some of the thumbnails, titles, and summary columns of YouTube videos provided by Google, and depending on the environment, embedded YouTube videos may be displayed.  <br><br>The rough explanation is displayed using html js css using the "yatsu" provided by Google that allows you to watch youtube videos.  <br><br>For a detailed explanation (for developers), use the youtube data api v3, an api provided by Google that allows you to get youtube video information, get the api key from google cloud, and use javascript to get the youtube data api It is a mechanism such as specifying the v3 endpoint URL, enabling API requests using the api key, and viewing each video information<br><br>This code can be viewed on GitHub.  In addition, the Company shall not be held responsible for any damages caused by the use of the information posted on this site through this service.  <br><br>This site was created by "Rinta".  For contact, feel free to contact us on discord, <A href="https://discord.gg/DxEungZpce">my discord server (https://discord.gg/DxEungZpce)</A> or raindrop#7658 please contact</p>
+      </div>
+    </div>
+    <script>
+      var openModal = document.getElementById("open-modal");
+      var modal = document.getElementById("modal");
+      var closeBtn = document.getElementById("close");
+      
+      openModal.onclick = function() {
+        modal.style.display = "block";
+      };
+      
+      closeBtn.onclick = function() {
+        modal.style.display = "none";
+      };
+    </script>
+  </body>
+<style>
+.search-box {
+    position: relative;
+    width: 70%;
+    transform: translate(0%, -10%);
+}
+  }
+</style>
+<input type="text" id="search-box" placeholder="Please enter a search term..">
+  <div id="results"></div>
+<script type="text/javascript" src="main.js"></script>
+<style>
+h1 {
+  position: relative;
+  color: #158b2b;
+  font-size: 20px;
+  padding: 10px 0;
+  text-align: center;
+  margin: 1.5em 0;
+}
+h1:before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  width: 150px;
+  height: 58px;
+  border-radius: 50%;
+  border: 5px solid #a6ddb0;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+.dark {
+	background-color: #F0F8FF; /* default light mode background color */
+	color: #000000; /* default light mode text color */
+}
+
+.dark-mode {
+	background-color: #1E1E1E; /* dark mode background color */
+	color: #FFFFFF; /* dark mode text color */
+}
+.mode-toggle {
+    position: fixed;
+    top: 30%;
+    left: 15%;
+    width: 25%;
+    transform: translate(-50%, -50%);
+  }
+
+ .results {
+    position: fixed;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+</style>
+<script>
+const toggleBtn = document.getElementById("mode-toggle");
+const body = document.body;
+
+toggleBtn.addEventListener("click", function() {
+	body.classList.toggle("dark-mode");
+});
+// APIキーを設定
+const API_KEY = 'AIzaSyDfFr3mb1R0EhvZ8MfbvYH4jC7QWh8658A';
+
+// エンドポイントURLを設定
+const ENDPOINT_URL = 'https://www.googleapis.com/youtube/v3/search';
+const searchBox = document.getElementById('search-box');
+const results = document.getElementById('results');
+
+searchBox.addEventListener('change', (event) => {
+    const query = event.target.value;
+
+    // APIリクエストを作成
+    const request = `${ENDPOINT_URL}?part=snippet&q=${query}&type=video&key=${API_KEY}`;
+
+    // APIリクエストを送信
+    fetch(request)
+        .then(response => response.json())
+        .then(data => {
+            const items = data.items;
+            renderResults(items);
+        });
+});
+function renderResults(items) {
+    results.innerHTML = '';
+
+    items.forEach(item => {
+        // 動画タイトルと説明を取得
+        const title = item.snippet.title;
+        const description = item.snippet.description;
+
+        // 動画IDを取得
+        const videoId = item.id.videoId;
+
+        // 動画サムネイルのURLを取得
+        const thumbnailUrl = item.snippet.thumbnails.medium.url;
+
+        // 動画のダウンロードリンクを作成
+        const downloadLink = `<a href="https://www.youtube.com/watch?v=${videoId}&feature=youtu.be" download>${title}</a>`;
+
+        // HTMLを作成
+        const html = `
+      <div>
+        <img src="${thumbnailUrl}">
+        <div>
+          <h2>${downloadLink}</h2>
+          <p>${description}</p>
+        </div>
+      </div>
+      <h2>
+      <iframe width="642" height="361" src="https://www.youtube.com/embed/${videoId}" title="${title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </h2>
+    `;
+
+        results.insertAdjacentHTML('beforeend', html);
+    });
+}
+</script>
+<script type="text/javascript" src="main.js"></script>
